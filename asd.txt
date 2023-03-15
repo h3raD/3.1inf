@@ -1,0 +1,126 @@
+#include <iostream>
+#include <locale>
+#include <cmath>
+
+using namespace std;
+
+// 3 * pow(x,4) + 4 * pow(x,3) - 12 * pow(x,2) + 1 = 0
+
+//Используя методы нахождения корней нелинейного уравнения, найти все корни
+//уравнения в соответствии с индивидуальным вариантом с заданной точностью
+
+int main()
+{
+	int cycle = 1, button = 0;
+	double eps1 = 0.0, a1 = 0.0, b1 = 0.0, f1 = 0.0, f11 = 0.0, f12 = 0.0, t1 = 0.0, x1 = 0.0;
+	int n1 = 0;
+
+	double eps2 = 0.0, a2 = 0.0, b2 = 0.0, f2 = 0.0, f21 = 0.0, f22 = 0.0, fz = 0.0, z2 = 0.0, x2 = 0.0, h2 = 0.0;
+	int n2 = 0;
+
+	setlocale(LC_ALL, "RUS");
+	while (cycle) {
+		cout << "Выберите пункт меню"s << endl;
+		cout << "1 - метод дихотомии"s << endl;
+		cout << "2 - метод хорд"s << endl;
+		cin >> button;
+
+		switch (button) {
+		case 1:
+
+			cout << "введите точки отрезка"s << endl;
+			cin >> a1 >> b1;
+			cout << "введите погрешность"s << endl;
+			cin >> eps1;
+
+			if ((3 * pow(a1, 4) + 4 * pow(a1, 3) - 12 * pow(a1, 2) + 1) * (3 * pow(b1, 4) + 4 * pow(b1, 3) - 12 * pow(b1, 2) + 1) < 0)
+			{
+				f1 = (3 * pow(a1, 4) + 4 * pow(a1, 3) - 12 * pow(a1, 2) + 1);
+				n1 = 1;
+			link1:
+				t1 = (a1 + b1) / 2;
+				f12 = 3 * pow(t1, 4) + 4 * pow(t1, 3) - 12 * pow(t1, 2) + 1;
+				if (f11 * f12 < 0)
+				{
+					b1 = t1;
+				}
+				else
+				{
+					a1 = t1;
+					f11 = f12;
+				}
+				n1 = n1 + 1;
+				if (fabs(b1 - a1) <= eps1)
+				{
+					x1 = (a1 + b1) / 2;
+					f1 = 3.0 * pow(x1, 4) + 4 * pow(x1, 3) - 12 * pow(x1, 2) + 1.0;
+				}
+				else
+				{
+					goto link1;
+				}
+			}
+			else
+			{
+				cout << "Корней нет"s << endl;
+			}
+		
+			cout << "x = "s << x1 << " f = "s << f1 << " n = " << n1 << endl;
+			system("pause");
+			break;
+		case 2:
+
+			cout << "введите точки отрезка"s << endl;
+			cin >> a2 >> b2;
+			cout << "введите погрешность"s << endl;
+			cin >> eps2;
+
+			if ((3 * pow(a2, 4) + 4 * pow(a2, 3) - 12 * pow(a2, 2) + 1) * (3 * pow(b1, 4) + 4 * pow(b1, 3) - 12 * pow(b1, 2) + 1) < 0)
+			{
+				f21 = (3 * pow(a2, 4) + 4 * pow(a2, 3) - 12 * pow(a2, 2) + 1);
+				f22 = (3 * 4 * pow (a2,3) + 4 * 3 * pow(a2,2) - 12 * 2 * a2 + 1);
+				n2 = 1;
+				if (f21 * f22 > 0)
+				{
+					x2 = b2;
+					z2 = a2;
+				}
+				else
+				{
+					x2 = a2;
+					z2 = b2;
+				}
+				fz = 3 * pow(z2, 4) + 4 * pow(z2, 3) - 12 * pow(z2, 2) + 1;
+			link2:
+				f21 = 3 * pow(x2, 4) + 4 * pow(x2, 3) - 12 * pow(x2, 2) + 1;
+				h2 = (x2 - z2) / (f21 - fz) * f21;
+				x2 = x2 - h2;
+				n2 = n2 + 1;
+
+				if (fabs(h2) <= eps2)
+				{
+					f2 = 3 * pow(x2, 4) + 4 * pow(x2, 3) - 12 * pow(x2, 2) + 1;
+				}
+				else
+				{
+					goto link2;
+				}
+			}
+			else
+			{
+				cout << "Корней нет"s << endl;
+			}
+			
+
+			cout << "x = "s << x1 << " f = "s << f1 << " n = " << n1 << endl;
+			system("pause");
+			break;
+
+		default :
+			system("pause");
+			cycle = 0;
+			break;
+		}
+	}
+	return 0;
+}
